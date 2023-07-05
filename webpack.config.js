@@ -1,17 +1,18 @@
 /* eslint-disable */
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { util } = require('webpack');
 
 module.exports = {
   mode: 'development',
   entry: {
-    main: './src/test.ts'
+    main: './src/example/test.ts'
   },
   devtool: 'inline-source-map',
   plugins: [
     new HtmlWebpackPlugin({
       title: 'TM.js demo',
-      template: './src/index.html'
+      template: './src/example/index.html'
     })
   ],
   devServer: {
@@ -23,7 +24,7 @@ module.exports = {
   output: {
     filename: '[name].[contenthash].bundle.js',
     path: path.resolve(__dirname, 'dist'),
-    clean: true
+    // clean: true
   },
   optimization: {
     runtimeChunk: 'single',
@@ -37,7 +38,6 @@ module.exports = {
       }
     },
     innerGraph: true,
-    // usedExports: true,
   },
   module: {
     rules: [
@@ -53,6 +53,11 @@ module.exports = {
       {
         test: /\.jpeg$/i,
         type: 'asset/resource'
+      },
+      {
+        test: /\.obj$/i,
+        use: 'url-loader',
+        include: path.resolve(__dirname, 'src/example'),
       }
     ]
   }
