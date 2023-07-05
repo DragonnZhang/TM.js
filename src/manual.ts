@@ -96,7 +96,7 @@ class Manual {
   }
 
   async setOption(option: ManualOption) {
-    // 0. check length not to be 0
+    // 0. check length: not 0
     if (!(option.steps.length && option.models.length)) {
       throw new Error('Option\'s steps and models\' length must not be zero!')
     }
