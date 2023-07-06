@@ -10,6 +10,9 @@ dependencies:
     version: registry.npmmirror.com/three@0.154.0
 
 devDependencies:
+  '@tweenjs/tween.js':
+    specifier: ^18.6.4
+    version: registry.npmmirror.com/@tweenjs/tween.js@18.6.4
   '@types/three':
     specifier: ^0.152.1
     version: registry.npmmirror.com/@types/three@0.152.1
