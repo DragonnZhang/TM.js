@@ -19,7 +19,8 @@ manual.setOption({
       name: 'step 1',
       objs: [
         {
-          id: '1'
+          id: '1',
+          position: [1, 0, 0],
         }
       ]
     },
@@ -27,7 +28,8 @@ manual.setOption({
       name: 'step 2',
       objs: [
         {
-          id: '2'
+          id: '1',
+          position: [0, 0, 0]
         }
       ]
     }

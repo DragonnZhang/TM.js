@@ -4,7 +4,8 @@ import {
   PerspectiveCamera,
   Object3D,
   Group,
-  DirectionalLight
+  DirectionalLight,
+  Camera,
 } from 'three'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
@@ -23,6 +24,13 @@ interface Obj {
   position?: [number, number, number]
   orientation?: [number, number, number]
 }
+interface CameraConfig {
+  position?: [number, number, number]
+  lookAt?: [number, number, number]
+}
+interface InitConfig {
+  camera: CameraConfig | Camera
+}
 interface ManualOption {
   models: Model[]
   steps: Step[]
@@ -32,7 +40,7 @@ type ModelMap = Map<string, Object3D>
 
 class Manual {
   private renderer
-  private camera
+  private camera: Camera
   private scene
   private temp_index = 0
   private model_map: ModelMap = new Map<string, Object3D>()
@@ -41,7 +49,7 @@ class Manual {
   private controls
   private light
 
-  constructor(canvas: HTMLCanvasElement) {
+  constructor(canvas: HTMLCanvasElement, config?: InitConfig) {
     // 1. set renderer
     this.renderer = new WebGLRenderer({ antialias: true, alpha: true, canvas })
 
@@ -49,9 +57,25 @@ class Manual {
     this.scene = new Scene()
 
     // 3. set camera
-    this.camera = new PerspectiveCamera(75, 2, 0.1, 5)
-    this.camera.position.z = 2
-
+    if (config?.camera) {
+      if (config.camera instanceof Camera) {
+        // user passes camera instance
+        this.camera = config.camera
+      }
+      else {
+        // user only passes configuration
+        this.camera = new PerspectiveCamera(75, 2, 0.1, 5)
+        const { position, lookAt } = config.camera
+        position && this.camera.position.set(...position)
+        lookAt && this.camera.lookAt(...lookAt)
+      }
+    }
+    else {
+      // default camera configuration
+      this.camera = new PerspectiveCamera(75, 2, 0.1, 5)
+      this.camera.position.z = 2
+    }
+    
     // 4. set orbit
     this.controls = new OrbitControls(this.camera, this.renderer.domElement)
     this.controls.maxAzimuthAngle = 0.25 * Math.PI
@@ -85,8 +109,10 @@ class Manual {
   private render() {
     if (this.resizeRendererToDisplaySize()) {
       const canvas = this.renderer.domElement
-      this.camera.aspect = canvas.clientWidth / canvas.clientHeight
-      this.camera.updateProjectionMatrix()
+      if (this.camera instanceof PerspectiveCamera) {
+        this.camera.aspect = canvas.clientWidth / canvas.clientHeight
+        this.camera.updateProjectionMatrix()
+      }
     }
     this.renderer.render(this.scene, this.camera)
 
@@ -125,14 +151,18 @@ class Manual {
   private loadStep(num: number) {
     const step = this.steps[num]
 
-    // clear the container and add models
+    // 1. clear the container
     this.modelContainer.clear()
+
+    // 2. add models to modelContainer
     step.objs.forEach((obj) => {
       const model = this.model_map.get(obj.id)
       if (!model) {
         throw new Error(`Id in steps(${obj.id}) doesn' t exist in models!`)
       }
       else {
+        obj.position && model.position.set(...obj.position)
+        obj.orientation && model.rotation.set(...obj.orientation)
         this.modelContainer.add(model)
       }
     })
