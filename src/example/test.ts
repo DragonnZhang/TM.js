@@ -38,6 +38,8 @@ manual.setOption({
   ]
 })
 
+const { showPrev, showNext } = manual
+
 const ele = document.querySelector('.button')!
 const button = document.createElement('button')
 button.onclick = triggerNext
@@ -45,7 +47,7 @@ button.innerText = 'next'
 ele.appendChild(button)
 
 function triggerNext() {
-  manual.showNext()
+  showNext()
 }
 
 const button2 = document.createElement('button')
@@ -54,5 +56,14 @@ button2.innerText = 'prev'
 ele.appendChild(button2)
 
 function triggerPrev() {
-  manual.showPrev()
+  showPrev()
+}
+
+document.onkeyup = (e) => {
+  if (e.key === 'ArrowLeft') {
+    triggerPrev()
+  }
+  else if (e.key === 'ArrowRight') {
+    triggerNext()
+  }
 }

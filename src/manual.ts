@@ -14,6 +14,7 @@ import {
 } from '@tweenjs/tween.js'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { bindThis } from './utils/decorator'
 
 
 interface Model {
@@ -80,9 +81,9 @@ class Manual {
     else {
       // default camera configuration
       this.camera = new PerspectiveCamera(75, 2, 0.1, 50)
-      this.camera.position.z = 2
+      this.camera.position.z = 10
     }
-    
+
     // 4. set orbit control
     this.controls = new OrbitControls(this.camera, this.renderer.domElement)
 
@@ -101,7 +102,7 @@ class Manual {
   resizeRendererToDisplaySize() {
     const canvas = this.renderer.domElement
     const pixelRatio = window.devicePixelRatio
-    const width  = canvas.clientWidth  * pixelRatio | 0
+    const width = canvas.clientWidth * pixelRatio | 0
     const height = canvas.clientHeight * pixelRatio | 0
     const needResize = canvas.width !== width || canvas.height !== height
     if (needResize) {
@@ -188,7 +189,7 @@ class Manual {
         position: obj.position,
         orientation: obj.orientation
       }]))
-      
+
       // 1. process oldIds which are in and not in newStep
       oldIds.forEach((v, oldId) => {
         const oldModel = this.model_map.get(oldId) as Object3D
@@ -203,24 +204,24 @@ class Manual {
           const old_position = v.position?.slice() as [number, number, number]
           const new_position = newIds.get(oldId)?.position
           if (old_position && new_position) {
-            const move = new Tween(old_position).to(new_position, 1000).easing(Easing.Elastic.InOut)
+            const move = new Tween(old_position).to(new_position, 200).easing(Easing.Linear.None)
             move
-            .onUpdate(() => {
-              oldModel.position.set(...old_position)
-            })
-            .start()
+              .onUpdate(() => {
+                oldModel.position.set(...old_position)
+              })
+              .start()
           }
 
           // rotate animation
           const old_orientation = v.orientation?.slice() as [number, number, number]
           const new_orientation = newIds.get(oldId)?.orientation
           if (old_orientation && new_orientation) {
-            const move = new Tween(old_orientation).to(new_orientation, 1000).easing(Easing.Elastic.InOut)
+            const move = new Tween(old_orientation).to(new_orientation, 200).easing(Easing.Linear.None)
             move
-            .onUpdate(() => {
-              oldModel.rotation.set(...old_orientation)
-            })
-            .start()
+              .onUpdate(() => {
+                oldModel.rotation.set(...old_orientation)
+              })
+              .start()
           }
         }
       })
@@ -235,23 +236,25 @@ class Manual {
         }
       })
     }
-    
+
     // 3. update current step
     this.current_step = num
   }
 
+  @bindThis
   showPrev() {
     if (this.current_step === 0) {
       return
     }
-    this.loadStep(this.current_step-1)
+    this.loadStep(this.current_step - 1)
   }
 
+  @bindThis
   showNext() {
-    if (this.current_step === this.steps.length-1) {
+    if (this.current_step === this.steps.length - 1) {
       return
     }
-    this.loadStep(this.current_step+1)
+    this.loadStep(this.current_step + 1)
   }
 }
 
