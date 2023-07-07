@@ -9,10 +9,6 @@ manual.setOption({
       id: '1',
       file: './cube.obj'
     },
-    {
-      id: '2',
-      file: './bugatti.obj'
-    }
   ],
   steps: [
     {
@@ -35,10 +31,11 @@ manual.setOption({
         }
       ]
     }
-  ]
+  ],
+  appearAnimation: 'zoom'
 })
 
-const { showPrev, showNext } = manual
+const { showPrev, showNext, jumpToStep } = manual
 
 const ele = document.querySelector('.button')!
 const button = document.createElement('button')
