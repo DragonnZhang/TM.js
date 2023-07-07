@@ -7,11 +7,7 @@ import {
   DirectionalLight,
   Camera,
 } from 'three'
-import {
-  Tween,
-  Easing,
-  update
-} from '@tweenjs/tween.js'
+import { Tween, Easing, update } from '@tweenjs/tween.js'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { bindThis } from './utils/decorator'
@@ -39,6 +35,7 @@ interface InitConfig {
 }
 interface ManualOption {
   animation?: boolean
+  appearAnimation?: 'none' | 'zoom' | 'flash-in'
   models: Model[]
   steps: Step[]
 }
@@ -99,7 +96,7 @@ class Manual {
     this.scene.add(this.modelContainer)
   }
 
-  resizeRendererToDisplaySize() {
+  private resizeRendererToDisplaySize() {
     const canvas = this.renderer.domElement
     const pixelRatio = window.devicePixelRatio
     const width = canvas.clientWidth * pixelRatio | 0
@@ -229,7 +226,7 @@ class Manual {
       newIds.forEach((v, newId) => {
         const newModel = this.model_map.get(newId) as Object3D
         if (!oldIds.has(newId)) {
-          // add model appear animation
+          // add model appear animation (according to appearAnimation config)
           v.position && newModel.position.set(...v.position)
           v.orientation && newModel.rotation.set(...v.orientation)
           this.modelContainer.add(newModel)
@@ -255,6 +252,17 @@ class Manual {
       return
     }
     this.loadStep(this.current_step + 1)
+  }
+
+  @bindThis
+  jumpToStep(step: number) {
+    if (!Number.isInteger(step)) {
+      throw new Error('Step must be an integer!')
+    }
+    if (step < 0 || step >= this.steps.length) {
+      throw new Error('Step must be between 0 and steps.length-1!')
+    }
+    this.loadStep(step)
   }
 }
 
