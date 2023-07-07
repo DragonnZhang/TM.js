@@ -79,7 +79,7 @@ class Manual {
     }
     else {
       // default camera configuration
-      this.camera = new PerspectiveCamera(75, 2, 0.1, 5)
+      this.camera = new PerspectiveCamera(75, 2, 0.1, 50)
       this.camera.position.z = 2
     }
     
@@ -199,21 +199,28 @@ class Manual {
         else {
           // move animation
 
-          // Copy v.position to old_position rather than align. Else when tween updates, it will affect v.position and will finally affect this.steps
+          /* Copy v.position to old_position rather than align. Else when tween updates, it will affect v.position and will finally affect this.steps */
           const old_position = v.position?.slice() as [number, number, number]
           const new_position = newIds.get(oldId)?.position
           if (old_position && new_position) {
             const move = new Tween(old_position).to(new_position, 1000).easing(Easing.Elastic.InOut)
             move
             .onUpdate(() => {
-              oldModel.position.set(...(old_position))
+              oldModel.position.set(...old_position)
             })
             .start()
           }
 
           // rotate animation
-          if (v.orientation) {
-            //
+          const old_orientation = v.orientation?.slice() as [number, number, number]
+          const new_orientation = newIds.get(oldId)?.orientation
+          if (old_orientation && new_orientation) {
+            const move = new Tween(old_orientation).to(new_orientation, 1000).easing(Easing.Elastic.InOut)
+            move
+            .onUpdate(() => {
+              oldModel.rotation.set(...old_orientation)
+            })
+            .start()
           }
         }
       })

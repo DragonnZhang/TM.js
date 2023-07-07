@@ -20,7 +20,8 @@ manual.setOption({
       objs: [
         {
           id: '1',
-          position: [1, 0, 0],
+          position: [0, 0, 0],
+          orientation: [0, 0, 0]
         }
       ]
     },
@@ -29,7 +30,8 @@ manual.setOption({
       objs: [
         {
           id: '1',
-          position: [0, 0, 0]
+          position: [5, 0, 0],
+          orientation: [1, 1, 1]
         }
       ]
     }
