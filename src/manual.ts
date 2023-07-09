@@ -11,36 +11,7 @@ import { Tween, Easing, update } from '@tweenjs/tween.js'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { bindThis } from './utils/decorator'
-
-
-interface Model {
-  id: string
-  file: string
-}
-interface Step {
-  name?: string
-  objs: Obj[]
-}
-interface Obj {
-  id: string
-  position?: [number, number, number]
-  orientation?: [number, number, number]
-}
-interface CameraConfig {
-  position?: [number, number, number]
-  lookAt?: [number, number, number]
-}
-interface InitConfig {
-  camera: CameraConfig | Camera
-}
-interface ManualOption {
-  animation?: boolean
-  appearAnimation?: 'none' | 'zoom' | 'flash-in'
-  models: Model[]
-  steps: Step[]
-}
-
-type ModelMap = Map<string, Object3D>
+import { ModelMap, InitConfig, Step, ManualOption } from './utils/type'
 
 class Manual {
   private renderer
