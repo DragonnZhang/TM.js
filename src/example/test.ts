@@ -2,7 +2,7 @@ import * as TM from '../index'
 import './index.css'
 
 const el: HTMLCanvasElement = document.querySelector('#c') as HTMLCanvasElement
-const manual = TM.init(el)
+const manual = TM.init(el, { camera: { lookAt: [1,2,3] } })
 manual.setOption({
   models: [
     {
