@@ -11,7 +11,14 @@ import { Tween, Easing, update } from '@tweenjs/tween.js'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { bindThis } from './utils/decorator'
-import { ModelMap, InitConfig, Step, ManualOption } from './utils/type'
+import {
+  ModelMap,
+  InitConfig,
+  Step,
+  ManualOption,
+  AnimationType
+} from './utils/type'
+import animationHandler from './animations'
 
 class Manual {
   private renderer
@@ -23,7 +30,8 @@ class Manual {
   private modelContainer
   private controls
   private light
-  private animation = true
+  private animation = false
+  private appearAnimation: AnimationType = 'none'
 
   constructor(canvas: HTMLCanvasElement, config?: InitConfig) {
     // 1. set renderer
@@ -101,6 +109,7 @@ class Manual {
     }
 
     option.animation && (this.animation = option.animation)
+    option.animation && (this.appearAnimation = option.appearAnimation)
 
     // 1. store the models in model_map
     const loader = new OBJLoader()
@@ -124,7 +133,6 @@ class Manual {
   }
 
   private loadStep(num: number) {
-    // debugger
     const step = this.steps[num]
 
     if (!this.animation || this.current_step === -1) {
@@ -181,7 +189,6 @@ class Manual {
             const move = new Tween(old_position)
               .to(new_position, 200)
               .easing(Easing.Linear.None)
-            move
               .onUpdate(() => {
                 oldModel.position.set(...old_position)
               })
@@ -199,7 +206,6 @@ class Manual {
             const move = new Tween(old_orientation)
               .to(new_orientation, 200)
               .easing(Easing.Linear.None)
-            move
               .onUpdate(() => {
                 oldModel.rotation.set(...old_orientation)
               })
@@ -212,8 +218,12 @@ class Manual {
         const newModel = this.model_map.get(newId) as Object3D
         if (!oldIds.has(newId)) {
           // add model appear animation (according to appearAnimation config)
-          v.position && newModel.position.set(...v.position)
-          v.orientation && newModel.rotation.set(...v.orientation)
+          const handler = animationHandler[this.appearAnimation]
+          handler(
+            newModel,
+            v.position ? [...v.position] : undefined,
+            v.orientation ? [...v.orientation] : undefined
+          )
           this.modelContainer.add(newModel)
         }
       })
