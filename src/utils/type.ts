@@ -20,12 +20,18 @@ interface CameraConfig {
 interface InitConfig {
   camera: CameraConfig | Camera
 }
-interface ManualOption {
-  animation?: boolean
-  appearAnimation?: 'none' | 'zoom' | 'flash-in'
+type ManualOption = {
   models: Model[]
   steps: Step[]
-}
+} & (
+  | {
+      animation?: false
+    }
+  | {
+      animation: true
+      appearAnimation?: 'none' | 'zoom' | 'flash-in'
+    }
+)
 type ModelMap = Map<string, Object3D>
 
 export { ManualOption, InitConfig, ModelMap, Step }
