@@ -1,4 +1,4 @@
-import { Camera, Object3D } from 'three'
+import { Camera, Group } from 'three'
 
 interface Model {
   id: string
@@ -32,11 +32,11 @@ type ManualOption = {
       appearAnimation: AnimationType
     }
 )
-type ModelMap = Map<string, Object3D>
+type ModelMap = Map<string, Group>
 type AnimationType = 'none' | 'zoom' | 'flash-in'
 
 type AnimationHandlerFunction = (
-  model: Object3D,
+  model: Group,
   position: [number, number, number],
   orientation?: [number, number, number]
 ) => void

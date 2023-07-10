@@ -2,7 +2,6 @@ import {
   WebGLRenderer,
   Scene,
   PerspectiveCamera,
-  Object3D,
   Group,
   DirectionalLight,
   Camera
@@ -25,7 +24,7 @@ class Manual {
   private camera: Camera
   private scene
   private current_step = -1
-  private model_map: ModelMap = new Map<string, Object3D>()
+  private model_map: ModelMap = new Map<string, Group>()
   private steps: Step[] = []
   private modelContainer
   private controls
@@ -175,7 +174,7 @@ class Manual {
 
       // 1. process oldIds which are in and not in newStep
       oldIds.forEach((v, oldId) => {
-        const oldModel = this.model_map.get(oldId) as Object3D
+        const oldModel = this.model_map.get(oldId) as Group
 
         if (!newIds.has(oldId)) {
           // 这里应该考虑加一个消失动画
@@ -216,7 +215,7 @@ class Manual {
       })
       // 2. process newIds which are not in oldStep
       newIds.forEach((v, newId) => {
-        const newModel = this.model_map.get(newId) as Object3D
+        const newModel = this.model_map.get(newId) as Group
         if (!oldIds.has(newId)) {
           // add model appear animation (according to appearAnimation config)
           const handler = animationHandler[this.appearAnimation]

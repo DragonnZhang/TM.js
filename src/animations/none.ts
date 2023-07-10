@@ -1,7 +1,7 @@
-import { Object3D } from 'three'
+import { Group } from 'three'
 
 function no_animation(
-  model: Object3D,
+  model: Group,
   position: [number, number, number],
   orientation?: [number, number, number]
 ) {

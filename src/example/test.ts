@@ -41,7 +41,7 @@ manual.setOption({
     }
   ],
   animation: true,
-  appearAnimation: 'zoom'
+  appearAnimation: 'flash-in'
 })
 
 const { showPrev, showNext } = manual
