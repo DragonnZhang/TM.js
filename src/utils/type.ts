@@ -10,7 +10,7 @@ interface Step {
 }
 interface Obj {
   id: string
-  position?: [number, number, number]
+  position: [number, number, number]
   orientation?: [number, number, number]
 }
 interface CameraConfig {
@@ -37,7 +37,7 @@ type AnimationType = 'none' | 'zoom' | 'flash-in'
 
 type AnimationHandlerFunction = (
   model: Object3D,
-  position?: [number, number, number],
+  position: [number, number, number],
   orientation?: [number, number, number]
 ) => void
 

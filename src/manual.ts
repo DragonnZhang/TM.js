@@ -145,7 +145,7 @@ class Manual {
         if (!model) {
           throw new Error(`Id in steps(${obj.id}) doesn' t exist in models!`)
         } else {
-          obj.position && model.position.set(...obj.position)
+          model.position.set(...obj.position)
           obj.orientation && model.rotation.set(...obj.orientation)
           this.modelContainer.add(model)
         }
@@ -178,14 +178,15 @@ class Manual {
         const oldModel = this.model_map.get(oldId) as Object3D
 
         if (!newIds.has(oldId)) {
+          // 这里应该考虑加一个消失动画
           this.modelContainer.remove(oldModel)
         } else {
           // move animation
 
           /* Copy v.position to old_position rather than align. Else when tween updates, it will affect v.position and will finally affect this.steps */
-          const old_position = v.position?.slice() as [number, number, number]
+          const old_position = v.position.slice() as [number, number, number]
           const new_position = newIds.get(oldId)?.position
-          if (old_position && new_position) {
+          if (new_position) {
             const move = new Tween(old_position)
               .to(new_position, 200)
               .easing(Easing.Linear.None)
@@ -221,7 +222,7 @@ class Manual {
           const handler = animationHandler[this.appearAnimation]
           handler(
             newModel,
-            v.position ? [...v.position] : undefined,
+            [...v.position],
             v.orientation ? [...v.orientation] : undefined
           )
           this.modelContainer.add(newModel)

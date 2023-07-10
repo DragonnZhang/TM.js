@@ -1,10 +1,10 @@
 import { Object3D } from 'three'
-import { Tween, Easing, update } from '@tweenjs/tween.js'
+import { Tween, Easing } from '@tweenjs/tween.js'
 import { no_animation } from './none'
 
 function zoom_animation(
   model: Object3D,
-  position?: [number, number, number],
+  position: [number, number, number],
   orientation?: [number, number, number]
 ) {
   no_animation(model, position, orientation)
