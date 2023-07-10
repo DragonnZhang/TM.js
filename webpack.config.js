@@ -1,7 +1,7 @@
 /* eslint-disable */
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { util } = require('webpack');
+const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const { util } = require('webpack')
 
 module.exports = {
   mode: 'development',
@@ -19,11 +19,11 @@ module.exports = {
     static: './dist'
   },
   resolve: {
-    extensions: ['.ts', '.js', '.html', '.hbs', '.svg'],
+    extensions: ['.ts', '.js', '.html', '.hbs', '.svg']
   },
   output: {
     filename: '[name].[contenthash].bundle.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'dist')
     // clean: true
   },
   optimization: {
@@ -37,7 +37,7 @@ module.exports = {
         }
       }
     },
-    innerGraph: true,
+    innerGraph: true
   },
   module: {
     rules: [
@@ -57,8 +57,8 @@ module.exports = {
       {
         test: /\.obj$/i,
         use: 'url-loader',
-        include: path.resolve(__dirname, 'src/example'),
+        include: path.resolve(__dirname, 'src/example')
       }
     ]
   }
-};
+}

@@ -5,7 +5,7 @@ import {
   Object3D,
   Group,
   DirectionalLight,
-  Camera,
+  Camera
 } from 'three'
 import { Tween, Easing, update } from '@tweenjs/tween.js'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
@@ -37,16 +37,14 @@ class Manual {
       if (config.camera instanceof Camera) {
         // user passes camera instance
         this.camera = config.camera
-      }
-      else {
+      } else {
         // user only passes configuration
         this.camera = new PerspectiveCamera(75, 2, 0.1, 5)
         const { position, lookAt } = config.camera
         position && this.camera.position.set(...position)
         lookAt && this.camera.lookAt(...lookAt)
       }
-    }
-    else {
+    } else {
       // default camera configuration
       this.camera = new PerspectiveCamera(75, 2, 0.1, 50)
       this.camera.position.z = 10
@@ -70,8 +68,8 @@ class Manual {
   private resizeRendererToDisplaySize() {
     const canvas = this.renderer.domElement
     const pixelRatio = window.devicePixelRatio
-    const width = canvas.clientWidth * pixelRatio | 0
-    const height = canvas.clientHeight * pixelRatio | 0
+    const width = (canvas.clientWidth * pixelRatio) | 0
+    const height = (canvas.clientHeight * pixelRatio) | 0
     const needResize = canvas.width !== width || canvas.height !== height
     if (needResize) {
       this.renderer.setSize(width, height, false)
@@ -99,7 +97,7 @@ class Manual {
   async setOption(option: ManualOption) {
     // 0. check length: not 0
     if (!(option.steps.length && option.models.length)) {
-      throw new Error('Option\'s steps and models\' length must not be zero!')
+      throw new Error("Option's steps and models' length must not be zero!")
     }
 
     option.animation && (this.animation = option.animation)
@@ -138,25 +136,34 @@ class Manual {
         const model = this.model_map.get(obj.id)
         if (!model) {
           throw new Error(`Id in steps(${obj.id}) doesn' t exist in models!`)
-        }
-        else {
+        } else {
           obj.position && model.position.set(...obj.position)
           obj.orientation && model.rotation.set(...obj.orientation)
           this.modelContainer.add(model)
         }
       })
-    }
-    else { // add animation when steps are switching
+    } else {
+      // add animation when steps are switching
       const oldStep = this.steps[this.current_step]
       const newStep = this.steps[num]
-      const oldIds = new Map(oldStep.objs.map(obj => [obj.id, {
-        position: obj.position,
-        orientation: obj.orientation
-      }]))
-      const newIds = new Map(newStep.objs.map(obj => [obj.id, {
-        position: obj.position,
-        orientation: obj.orientation
-      }]))
+      const oldIds = new Map(
+        oldStep.objs.map((obj) => [
+          obj.id,
+          {
+            position: obj.position,
+            orientation: obj.orientation
+          }
+        ])
+      )
+      const newIds = new Map(
+        newStep.objs.map((obj) => [
+          obj.id,
+          {
+            position: obj.position,
+            orientation: obj.orientation
+          }
+        ])
+      )
 
       // 1. process oldIds which are in and not in newStep
       oldIds.forEach((v, oldId) => {
@@ -164,15 +171,16 @@ class Manual {
 
         if (!newIds.has(oldId)) {
           this.modelContainer.remove(oldModel)
-        }
-        else {
+        } else {
           // move animation
 
           /* Copy v.position to old_position rather than align. Else when tween updates, it will affect v.position and will finally affect this.steps */
           const old_position = v.position?.slice() as [number, number, number]
           const new_position = newIds.get(oldId)?.position
           if (old_position && new_position) {
-            const move = new Tween(old_position).to(new_position, 200).easing(Easing.Linear.None)
+            const move = new Tween(old_position)
+              .to(new_position, 200)
+              .easing(Easing.Linear.None)
             move
               .onUpdate(() => {
                 oldModel.position.set(...old_position)
@@ -181,10 +189,16 @@ class Manual {
           }
 
           // rotate animation
-          const old_orientation = v.orientation?.slice() as [number, number, number]
+          const old_orientation = v.orientation?.slice() as [
+            number,
+            number,
+            number
+          ]
           const new_orientation = newIds.get(oldId)?.orientation
           if (old_orientation && new_orientation) {
-            const move = new Tween(old_orientation).to(new_orientation, 200).easing(Easing.Linear.None)
+            const move = new Tween(old_orientation)
+              .to(new_orientation, 200)
+              .easing(Easing.Linear.None)
             move
               .onUpdate(() => {
                 oldModel.rotation.set(...old_orientation)

@@ -2,13 +2,13 @@ import * as TM from '../index'
 import './index.css'
 
 const el: HTMLCanvasElement = document.querySelector('#c') as HTMLCanvasElement
-const manual = TM.init(el, { camera: { lookAt: [1,2,3] } })
+const manual = TM.init(el, { camera: { lookAt: [1, 2, 3] } })
 manual.setOption({
   models: [
     {
       id: '1',
       file: './cube.obj'
-    },
+    }
   ],
   steps: [
     {
@@ -51,8 +51,7 @@ ele.appendChild(button2)
 document.onkeyup = (e) => {
   if (e.key === 'ArrowLeft') {
     showPrev()
-  }
-  else if (e.key === 'ArrowRight') {
+  } else if (e.key === 'ArrowRight') {
     showNext()
   }
 }

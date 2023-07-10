@@ -28,5 +28,4 @@ interface ManualOption {
 }
 type ModelMap = Map<string, Object3D>
 
-
 export { ManualOption, InitConfig, ModelMap, Step }
