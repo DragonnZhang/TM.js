@@ -31,8 +31,9 @@ manual.setOption({
         }
       ]
     }
-  ],
-  appearAnimation: 'zoom'
+  ]
+  // animation: true,
+  // appearAnimation: 'zoom'
 })
 
 const { showPrev, showNext, jumpToStep } = manual

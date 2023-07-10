@@ -29,9 +29,23 @@ type ManualOption = {
     }
   | {
       animation: true
-      appearAnimation?: 'none' | 'zoom' | 'flash-in'
+      appearAnimation: AnimationType
     }
 )
 type ModelMap = Map<string, Object3D>
+type AnimationType = 'none' | 'zoom' | 'flash-in'
 
-export { ManualOption, InitConfig, ModelMap, Step }
+type AnimationHandlerFunction = (
+  model: Object3D,
+  position?: [number, number, number],
+  orientation?: [number, number, number]
+) => void
+
+export {
+  ManualOption,
+  InitConfig,
+  ModelMap,
+  Step,
+  AnimationType,
+  AnimationHandlerFunction
+}
