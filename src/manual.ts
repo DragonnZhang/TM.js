@@ -15,22 +15,25 @@ import {
   InitConfig,
   Step,
   ManualOption,
-  AnimationType
+  AnimationType,
+  StepFunction
 } from './utils/type'
 import { animationHandler, disappearAnimationHandler } from './animations'
 
 class Manual {
   private renderer
-  private camera: Camera
-  private scene
   private current_step = -1
-  private model_map: ModelMap = new Map<string, Group>()
   private steps: Step[] = []
-  private modelContainer
   private controls
-  private light
   private animation = false
   private appearAnimation: AnimationType = 'none'
+  private userLoadStep: StepFunction | undefined = undefined
+
+  public camera: Camera
+  public light
+  public scene
+  public model_map: ModelMap = new Map<string, Group>()
+  public modelContainer
 
   constructor(canvas: HTMLCanvasElement, config?: InitConfig) {
     // 1. set renderer
@@ -101,8 +104,8 @@ class Manual {
     })
   }
 
-  async setOption(option: ManualOption) {
-    // 0. check length: not 0
+  private setStepArrayOption(option: ManualOption) {
+    // 1. check length: not 0
     if (!(option.steps.length && option.models.length)) {
       throw new Error("Option's steps and models' length must not be zero!")
     }
@@ -110,7 +113,26 @@ class Manual {
     option.animation && (this.animation = option.animation)
     option.animation && (this.appearAnimation = option.appearAnimation)
 
-    // 1. store the models in model_map
+    // 2. store the steps, which will be used in loadStep method
+    this.steps = option.steps as Step[]
+  }
+
+  private setStepFunctionOption(option: ManualOption) {
+    if (!option.models.length) {
+      throw new Error("Option's models' length must not be zero!")
+    }
+    this.userLoadStep = option.steps as StepFunction
+  }
+
+  async setOption(option: ManualOption) {
+    // 1. process step according to its type
+    if (option.steps instanceof Array) {
+      this.setStepArrayOption(option)
+    } else {
+      this.setStepFunctionOption(option)
+    }
+
+    // 2. store the models in model_map
     const loader = new OBJLoader()
     for (const model of option.models) {
       const { id, file } = model
@@ -118,11 +140,8 @@ class Manual {
       this.model_map.set(id, m)
     }
 
-    // 2. store the steps, which will be used in loadStep method
-    this.steps = option.steps
-
     // 3. load the first step
-    this.loadStep(0)
+    this.userLoadStep ? this.userLoadStep(this, undefined, 0) : this.loadStep(0)
 
     // 4. set the current step to be 0
     this.current_step = 0
@@ -239,7 +258,7 @@ class Manual {
     if (this.current_step === 0) {
       return
     }
-    this.loadStep(this.current_step - 1)
+    this.jumpToStep(this.current_step - 1)
   }
 
   @bindThis
@@ -247,7 +266,7 @@ class Manual {
     if (this.current_step === this.steps.length - 1) {
       return
     }
-    this.loadStep(this.current_step + 1)
+    this.jumpToStep(this.current_step + 1)
   }
 
   @bindThis
@@ -258,7 +277,9 @@ class Manual {
     if (step < 0 || step >= this.steps.length) {
       throw new Error('Step must be between 0 and steps.length-1!')
     }
-    this.loadStep(step)
+    this.userLoadStep
+      ? this.userLoadStep(this, this.current_step, step)
+      : this.loadStep(step)
   }
 
   @bindThis
