@@ -1,4 +1,5 @@
 import { Camera, Group } from 'three'
+import { Manual } from '../manual'
 
 interface Model {
   id: string
@@ -22,7 +23,7 @@ interface InitConfig {
 }
 type ManualOption = {
   models: Model[]
-  steps: Step[]
+  steps: Step[] | StepFunction
 } & (
   | {
       animation?: false
@@ -34,6 +35,7 @@ type ManualOption = {
 )
 type ModelMap = Map<string, Group>
 type AnimationType = 'none' | 'zoom' | 'flash-in'
+type StepFunction = (manual: Manual, prevStep: number, nextStep: number) => void
 
 type AnimationHandlerFunction = (
   model: Group,
@@ -50,5 +52,6 @@ export {
   Step,
   AnimationType,
   AnimationHandlerFunction,
-  DisappearAnimationHandlerFunction
+  DisappearAnimationHandlerFunction,
+  StepFunction
 }
