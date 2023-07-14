@@ -1,4 +1,4 @@
-import * as TM from '../index'
+import * as TM from '../../index'
 import './index.css'
 
 const el: HTMLCanvasElement = document.querySelector('#c') as HTMLCanvasElement
