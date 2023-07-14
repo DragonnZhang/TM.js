@@ -1,19 +1,26 @@
 import * as TM from '../../index'
 import './index.css'
 
+const modelPath = '/public/models/'
+
 const el: HTMLCanvasElement = document.querySelector('#c') as HTMLCanvasElement
 const manual = TM.init(el)
+const models = [
+  {
+    id: '1',
+    file: 'cube.obj'
+  },
+  {
+    id: '2',
+    file: 'cube.obj'
+  }
+]
+models.forEach((o) => {
+  o.file = modelPath + o.file
+})
+
 manual.setOption({
-  models: [
-    {
-      id: '1',
-      file: './cube.obj'
-    },
-    {
-      id: '2',
-      file: './cube.obj'
-    }
-  ],
+  models: models,
   steps: [
     {
       name: 'step 1',
@@ -41,10 +48,10 @@ manual.setOption({
     }
   ],
   animation: true,
-  appearAnimation: 'none'
+  appearAnimation: 'zoom'
 })
 
-const { showPrev, showNext } = manual
+const { showPrev, showNext, jumpToStep, getCurrentStep } = manual
 
 const ele = document.querySelector('.button')!
 const button = document.createElement('button')

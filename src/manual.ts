@@ -177,7 +177,7 @@ class Manual {
         const oldModel = this.model_map.get(oldId) as Group
 
         if (!newIds.has(oldId)) {
-          // 消失动画
+          // disappear animation
           const handler = disappearAnimationHandler[this.appearAnimation]
           handler(oldModel)
         } else {
@@ -259,6 +259,11 @@ class Manual {
       throw new Error('Step must be between 0 and steps.length-1!')
     }
     this.loadStep(step)
+  }
+
+  @bindThis
+  getCurrentStep() {
+    return this.current_step
   }
 }
 

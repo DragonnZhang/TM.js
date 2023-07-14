@@ -16,15 +16,18 @@ module.exports = {
     })
   ],
   devServer: {
-    static: './dist'
+    static: {
+      directory: path.join(__dirname, 'public'),
+      publicPath: '/public'
+    }
   },
   resolve: {
     extensions: ['.ts', '.js', '.html', '.hbs', '.svg']
   },
   output: {
     filename: '[name].[contenthash].bundle.js',
-    path: path.resolve(__dirname, 'dist')
-    // clean: true
+    path: path.resolve(__dirname, 'dist'),
+    clean: true
   },
   optimization: {
     runtimeChunk: 'single',
