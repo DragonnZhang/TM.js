@@ -6,13 +6,13 @@ const { util } = require('webpack')
 module.exports = {
   mode: 'development',
   entry: {
-    main: './src/example/test.ts'
+    main: './src/examples/basic-cube/test.ts'
   },
   devtool: 'inline-source-map',
   plugins: [
     new HtmlWebpackPlugin({
       title: 'TM.js demo',
-      template: './src/example/index.html'
+      template: './src/examples/basic-cube/index.html'
     })
   ],
   devServer: {
@@ -57,7 +57,7 @@ module.exports = {
       {
         test: /\.obj$/i,
         use: 'url-loader',
-        include: path.resolve(__dirname, 'src/example')
+        include: path.resolve(__dirname, 'src/examples')
       }
     ]
   }

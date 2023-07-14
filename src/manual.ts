@@ -17,7 +17,7 @@ import {
   ManualOption,
   AnimationType
 } from './utils/type'
-import animationHandler from './animations'
+import { animationHandler, disappearAnimationHandler } from './animations'
 
 class Manual {
   private renderer
@@ -177,8 +177,9 @@ class Manual {
         const oldModel = this.model_map.get(oldId) as Group
 
         if (!newIds.has(oldId)) {
-          // 这里应该考虑加一个消失动画
-          this.modelContainer.remove(oldModel)
+          // 消失动画
+          const handler = disappearAnimationHandler[this.appearAnimation]
+          handler(oldModel)
         } else {
           // move animation
 

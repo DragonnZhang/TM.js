@@ -1,10 +1,18 @@
-import { AnimationHandlerFunction, AnimationType } from '../utils/type'
-import { no_animation } from './none'
-import { zoom_animation } from './zoom'
-import { flash_in_animation } from './flash-in'
+import {
+  AnimationHandlerFunction,
+  AnimationType,
+  DisappearAnimationHandlerFunction
+} from '../utils/type'
+import { no_animation, no_disappear_animation } from './none'
+import { zoom_animation, zoom_disappear_animation } from './zoom'
+import { flash_in_animation, flash_out_animation } from './flash-in'
 
 type AnimationHandler = {
   [K in AnimationType]: AnimationHandlerFunction
+}
+
+type DisappearAnimationHandler = {
+  [K in AnimationType]: DisappearAnimationHandlerFunction
 }
 
 const animationHandler: AnimationHandler = {
@@ -13,4 +21,10 @@ const animationHandler: AnimationHandler = {
   'flash-in': flash_in_animation
 }
 
-export default animationHandler
+const disappearAnimationHandler: DisappearAnimationHandler = {
+  none: no_disappear_animation,
+  zoom: zoom_disappear_animation,
+  'flash-in': flash_out_animation
+}
+
+export { animationHandler, disappearAnimationHandler }

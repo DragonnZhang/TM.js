@@ -1,5 +1,6 @@
 import { Group, Material, Mesh } from 'three'
 import { Tween, Easing } from '@tweenjs/tween.js'
+import { no_disappear_animation } from './none'
 
 function flash_in_animation(
   model: Group,
@@ -40,4 +41,20 @@ function flash_in_animation(
   //   .start()
 }
 
-export { flash_in_animation }
+function flash_out_animation(model: Group) {
+  const position = model.position.toArray()
+  const from = [position[0], position[1], position[2]]
+  const to = [position[0], position[1] + 5, position[2]]
+  const move = new Tween(from)
+    .to(to, 200)
+    .easing(Easing.Back.In)
+    .onUpdate(() => {
+      model.position.set(...(from as [number, number, number]))
+    })
+    .start()
+    .onComplete(() => {
+      no_disappear_animation(model)
+    })
+}
+
+export { flash_in_animation, flash_out_animation }

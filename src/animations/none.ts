@@ -9,4 +9,8 @@ function no_animation(
   orientation && model.rotation.set(...orientation)
 }
 
-export { no_animation }
+function no_disappear_animation(model: Group) {
+  model.parent?.remove(model)
+}
+
+export { no_animation, no_disappear_animation }

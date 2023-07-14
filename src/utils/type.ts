@@ -41,11 +41,14 @@ type AnimationHandlerFunction = (
   orientation?: [number, number, number]
 ) => void
 
+type DisappearAnimationHandlerFunction = (model: Group) => void
+
 export {
   ManualOption,
   InitConfig,
   ModelMap,
   Step,
   AnimationType,
-  AnimationHandlerFunction
+  AnimationHandlerFunction,
+  DisappearAnimationHandlerFunction
 }
