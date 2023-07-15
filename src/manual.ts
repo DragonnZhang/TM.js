@@ -4,10 +4,12 @@ import {
   PerspectiveCamera,
   Group,
   DirectionalLight,
-  Camera
+  Camera,
+  PMREMGenerator
 } from 'three'
 import { Tween, Easing, update } from '@tweenjs/tween.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment'
 import { bindThis } from './utils/decorator'
 import {
   ModelMap,
@@ -23,17 +25,17 @@ import { loader } from './loader/loader'
 class Manual {
   private renderer
   private steps: Step[] = []
-  private controls
   private animation = false
   private appearAnimation: AnimationType = 'none'
   private userLoadStep: StepFunction | undefined = undefined
 
   public camera: Camera
-  public light
+  // public light
   public scene
   public model_map: ModelMap = new Map<string, Group>()
   public modelContainer
   public current_step = -1
+  public controls
 
   constructor(canvas: HTMLCanvasElement, config?: InitConfig) {
     // 1. set renderer
@@ -49,24 +51,40 @@ class Manual {
         this.camera = config.camera
       } else {
         // user only passes configuration
-        this.camera = new PerspectiveCamera(75, 2, 0.1, 5)
+        this.camera = new PerspectiveCamera(
+          45,
+          window.innerWidth / window.innerHeight,
+          1,
+          10000
+        )
         const { position, lookAt } = config.camera
         position && this.camera.position.set(...position)
         lookAt && this.camera.lookAt(...lookAt)
       }
     } else {
       // default camera configuration
-      this.camera = new PerspectiveCamera(75, 2, 0.1, 50)
-      this.camera.position.z = 10
+      this.camera = new PerspectiveCamera(
+        45,
+        window.innerWidth / window.innerHeight,
+        1,
+        10000
+      )
+      this.camera.position.set(0, 0, 5)
     }
 
     // 4. set orbit control
     this.controls = new OrbitControls(this.camera, this.renderer.domElement)
+    this.controls.enableDamping = true
 
     // 5. set light
-    this.light = new DirectionalLight(0xffffff, 0.3)
-    this.light.position.set(-11, 9, 9)
-    this.scene.add(this.light)
+    // this.light = new DirectionalLight(0xffffff, 0.3)
+    // this.light.position.set(-11, 9, 9)
+    // this.scene.add(this.light)
+
+    const pmremGenerator = new PMREMGenerator(this.renderer)
+    this.scene.environment = pmremGenerator.fromScene(
+      new RoomEnvironment()
+    ).texture
 
     // 6. set group
     this.modelContainer = new Group()
@@ -96,6 +114,7 @@ class Manual {
       }
     }
     this.renderer.render(this.scene, this.camera)
+    this.controls.update()
 
     update()
 
