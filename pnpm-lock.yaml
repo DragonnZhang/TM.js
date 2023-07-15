@@ -6,7 +6,7 @@ settings:
 
 dependencies:
   three:
-    specifier: ^0.154.0
+    specifier: latest
     version: registry.npmmirror.com/three@0.154.0
 
 devDependencies:
