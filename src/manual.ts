@@ -7,7 +7,6 @@ import {
   Camera
 } from 'three'
 import { Tween, Easing, update } from '@tweenjs/tween.js'
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { bindThis } from './utils/decorator'
 import {
@@ -19,6 +18,7 @@ import {
   StepFunction
 } from './utils/type'
 import { animationHandler, disappearAnimationHandler } from './animations'
+import { loader } from './loader/loader'
 
 class Manual {
   private renderer
@@ -133,7 +133,6 @@ class Manual {
     }
 
     // 2. store the models in model_map
-    const loader = new OBJLoader()
     for (const model of option.models) {
       const { id, file } = model
       const m = await loader.loadAsync(file)
