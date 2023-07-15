@@ -1,7 +1,7 @@
 import * as TM from '../../index'
 import './index.css'
 
-const modelPath = '/public/models/'
+const modelPath = '/public/models/obj/'
 
 const el: HTMLCanvasElement = document.querySelector('#c') as HTMLCanvasElement
 const manual = TM.init(el)
