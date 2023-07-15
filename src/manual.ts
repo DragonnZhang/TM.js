@@ -22,7 +22,6 @@ import { animationHandler, disappearAnimationHandler } from './animations'
 
 class Manual {
   private renderer
-  private current_step = -1
   private steps: Step[] = []
   private controls
   private animation = false
@@ -34,6 +33,7 @@ class Manual {
   public scene
   public model_map: ModelMap = new Map<string, Group>()
   public modelContainer
+  public current_step = -1
 
   constructor(canvas: HTMLCanvasElement, config?: InitConfig) {
     // 1. set renderer
@@ -263,7 +263,10 @@ class Manual {
 
   @bindThis
   showNext() {
-    if (this.current_step === this.steps.length - 1) {
+    if (
+      this.steps.length !== 0 &&
+      this.current_step === this.steps.length - 1
+    ) {
       return
     }
     this.jumpToStep(this.current_step + 1)
@@ -274,12 +277,14 @@ class Manual {
     if (!Number.isInteger(step)) {
       throw new Error('Step must be an integer!')
     }
-    if (step < 0 || step >= this.steps.length) {
-      throw new Error('Step must be between 0 and steps.length-1!')
+    if (this.userLoadStep) {
+      this.userLoadStep(this, this.current_step, step)
+    } else {
+      if (step < 0 || step >= this.steps.length) {
+        throw new Error('Step must be between 0 and steps.length-1!')
+      }
+      this.loadStep(step)
     }
-    this.userLoadStep
-      ? this.userLoadStep(this, this.current_step, step)
-      : this.loadStep(step)
   }
 
   @bindThis

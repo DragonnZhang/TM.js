@@ -20,10 +20,16 @@ models.forEach((o) => {
 })
 
 const stepFunc: TM.StepFunction = (manual, prevStep, nextStep) => {
-  if (!prevStep) {
+  if (prevStep === undefined) {
     console.log(manual)
   } else {
-    console.log(manual)
+    if (prevStep < nextStep) {
+      console.log('next')
+      manual.current_step++
+    } else {
+      console.log('prev')
+      manual.current_step--
+    }
   }
 }
 
