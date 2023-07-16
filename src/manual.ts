@@ -30,7 +30,7 @@ class Manual {
   private userLoadStep: StepFunction | undefined = undefined
 
   public camera: Camera
-  // public light
+  public light
   public scene
   public model_map: ModelMap = new Map<string, Group>()
   public modelContainer
@@ -77,9 +77,9 @@ class Manual {
     this.controls.enableDamping = true
 
     // 5. set light
-    // this.light = new DirectionalLight(0xffffff, 0.3)
-    // this.light.position.set(-11, 9, 9)
-    // this.scene.add(this.light)
+    this.light = new DirectionalLight(0xffffff, 0.3)
+    this.light.position.set(-11, 9, 9)
+    this.scene.add(this.light)
 
     const pmremGenerator = new PMREMGenerator(this.renderer)
     this.scene.environment = pmremGenerator.fromScene(
@@ -152,11 +152,12 @@ class Manual {
     }
 
     // 2. store the models in model_map
-    for (const model of option.models) {
+    const load_promise_list = option.models.map(async (model) => {
       const { id, file } = model
       const m = await loader.loadAsync(file)
       this.model_map.set(id, m)
-    }
+    })
+    await Promise.all(load_promise_list)
 
     // 3. load the first step
     this.userLoadStep ? this.userLoadStep(this, undefined, 0) : this.loadStep(0)
