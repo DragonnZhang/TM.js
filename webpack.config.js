@@ -6,8 +6,8 @@ const { util } = require('webpack')
 module.exports = {
   mode: 'development',
   entry: {
-    // main: './src/examples/basic-cube/test.ts'
-    main: './src/examples/lego/test.ts'
+    // main: './src/examples/basic-cube/basic-cube.ts'
+    main: './src/examples/lego/lego.ts'
   },
   devtool: 'inline-source-map',
   plugins: [
