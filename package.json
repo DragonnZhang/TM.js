@@ -1,15 +1,14 @@
 {
+  "name": "tm",
   "version": "1.0.0",
   "packageManager": "pnpm@8.6.5",
-  "description": "",
+  "description": "A Library for building 3D manual.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
     "dev": "webpack serve"
   },
-  "keywords": [],
-  "author": "",
+  "author": "DragonnZhang",
   "license": "ISC",
   "devDependencies": {
     "@tweenjs/tween.js": "^18.6.4",
