@@ -45,7 +45,7 @@ const stepFunc: TM.StepFunction = (manual, currStep, nextStep) => {
       .add(controls.target0)
     controls.reset()
   } else {
-    if (nextStep >= 0 && nextStep <= 7) {
+    if (nextStep >= 0 && nextStep <= m?.userData.numBuildingSteps - 1) {
       updateObjectVisibility(m!, nextStep)
       manual.current_step = nextStep
     }
