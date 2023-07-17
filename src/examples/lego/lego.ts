@@ -24,10 +24,10 @@ function updateObjectVisibility(model: Group, nextStep: number) {
   })
 }
 
-const stepFunc: TM.StepFunction = (manual, prevStep, nextStep) => {
+const stepFunc: TM.StepFunction = (manual, currStep, nextStep) => {
   const { camera, controls, modelContainer, model_map } = manual
   const m = model_map.get('1')
-  if (prevStep === undefined) {
+  if (currStep === undefined) {
     camera.position.set(150, 200, 250)
 
     m!.rotation.x = Math.PI
@@ -45,8 +45,8 @@ const stepFunc: TM.StepFunction = (manual, prevStep, nextStep) => {
       .add(controls.target0)
     controls.reset()
   } else {
-    updateObjectVisibility(m!, nextStep)
     if (nextStep >= 0 && nextStep <= 7) {
+      updateObjectVisibility(m!, nextStep)
       manual.current_step = nextStep
     }
   }

@@ -37,7 +37,7 @@ type ModelMap = Map<string, Group>
 type AnimationType = 'none' | 'zoom' | 'flash-in'
 type StepFunction = (
   manual: Manual,
-  prevStep: number | undefined,
+  currStep: number | undefined,
   nextStep: number
 ) => void
 
