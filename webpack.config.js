@@ -6,15 +6,22 @@ const { util } = require('webpack')
 module.exports = {
   mode: 'development',
   entry: {
-    // main: './src/examples/basic-cube/basic-cube.ts'
-    main: './src/examples/lego/lego.ts'
+    'basic-cube': './src/examples/basic-cube/basic-cube.ts',
+    lego: './src/examples/lego/lego.ts'
   },
   devtool: 'inline-source-map',
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'TM.js demo',
-      // template: './src/examples/basic-cube/index.html'
-      template: './src/examples/lego/index.html'
+      title: 'TM.js demo - basic-cube',
+      filename: 'basic-cube.html',
+      template: './src/examples/basic-cube/index.html',
+      chunks: ['basic-cube']
+    }),
+    new HtmlWebpackPlugin({
+      title: 'TM.js demo - lego',
+      filename: 'lego.html',
+      template: './src/examples/lego/index.html',
+      chunks: ['lego']
     })
   ],
   devServer: {
