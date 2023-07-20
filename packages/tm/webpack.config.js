@@ -6,21 +6,21 @@ const { util } = require('webpack')
 module.exports = {
   mode: 'development',
   entry: {
-    'basic-cube': './src/examples/basic-cube/basic-cube.ts',
-    lego: './src/examples/lego/lego.ts'
+    'basic-cube': './examples/basic-cube/basic-cube.ts',
+    lego: './examples/lego/lego.ts'
   },
   devtool: 'inline-source-map',
   plugins: [
     new HtmlWebpackPlugin({
       title: 'TM.js demo - basic-cube',
       filename: 'basic-cube.html',
-      template: './src/examples/basic-cube/index.html',
+      template: './examples/basic-cube/index.html',
       chunks: ['basic-cube']
     }),
     new HtmlWebpackPlugin({
       title: 'TM.js demo - lego',
       filename: 'lego.html',
-      template: './src/examples/lego/index.html',
+      template: './examples/lego/index.html',
       chunks: ['lego']
     })
   ],
@@ -69,7 +69,7 @@ module.exports = {
       {
         test: /\.obj$/i,
         use: 'url-loader',
-        include: path.resolve(__dirname, 'src/examples')
+        include: path.resolve(__dirname, 'examples')
       }
     ]
   }
