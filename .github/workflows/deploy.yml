@@ -25,16 +25,13 @@ jobs:
         with:
           node-version: 16
           cache: pnpm
-      - run: ls
-      - run: cd packages/docs/
-      - run: ls
-      - run: pnpm i
+      - run: cd packages/docs/ && pnpm i
       - name: Build
-        run: pnpm run docs:build
+        run: cd packages/docs/ && pnpm run docs:build
       - uses: actions/configure-pages@v2
       - uses: actions/upload-pages-artifact@v1
         with:
-          path: docs/.vitepress/dist
+          path: packages/docs/docs/.vitepress/dist
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v1
