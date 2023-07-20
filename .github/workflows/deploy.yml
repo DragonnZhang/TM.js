@@ -25,7 +25,8 @@ jobs:
         with:
           node-version: 16
           cache: pnpm
-      - run: cd packages/docs
+      - run: ls
+      - run: cd packages/docs/
       - run: pnpm i
       - name: Build
         run: pnpm run docs:build
