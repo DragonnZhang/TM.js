@@ -132,3 +132,7 @@ dist
 
 # ds_store
 .DS_Store
+
+# vitepress
+**/.vitepress/dist
+**/.vitepress/cache
