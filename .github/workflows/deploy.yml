@@ -28,8 +28,9 @@ jobs:
       - run: cd packages/docs/ && pnpm i
       - name: Build
         run: cd packages/docs/ && pnpm run docs:build
-      - run: cd packages/docs/
-        uses: actions/configure-pages@v2
+      - uses: actions/configure-pages@v2
+        with:
+          path: packages/docs/docs/.vitepress/dist
       - uses: actions/upload-pages-artifact@v1
         with:
           path: packages/docs/docs/.vitepress/dist
