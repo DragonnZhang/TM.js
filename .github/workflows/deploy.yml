@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+    path: 
+      - "packages/docs/**"
+      - ".github/workflows/deploy.yml"
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -29,8 +32,6 @@ jobs:
       - name: Build
         run: cd packages/docs/ && pnpm run docs:build
       - uses: actions/configure-pages@v2
-        with:
-          path: packages/docs/docs/.vitepress/dist
       - uses: actions/upload-pages-artifact@v1
         with:
           path: packages/docs/docs/.vitepress/dist
